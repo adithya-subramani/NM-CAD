@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Welcome, {{ username }}!</h1>
+    <!-- <h1>Welcome, dummy!</h1> -->
+    <p>You are now logged in to the dashboard.</p>
+    <nav>
+        <ul>
+            <li><a href="{{ url_for('login') }}">Logout</a></li>
+        </ul>
+    </nav>
+    <section class="new-image-tab">
+        <h2>Upload or create a new image</h2>
+        <form method="post" enctype="multipart/form-data" action="{{url_for('upload',username = username)}}">
+            <input type="file" name="file" required>
+            <br><br>
+            <button type="submit">Upload</button>
+        </form>
+    </section>
+    <section class="my-image-tab">
+        <h2>My images</h2>
+        <ul>
+            {% for image in my_images %}
+              <!-- <li><a href="/">{{ image['NAME']}}</a></li> -->
+              <div class="gallery">
+                <a target="_blank" href="{{ url_for('editor',id=image['ID'],username=username) }}">
+                  <!-- <img src="img_5terre.jpg" alt="Cinque Terre" width="600" height="400"> -->
+                  <img src="data:image/png;base64,{{ image['DATA'] }}" height="400" width="600" />
+                <div class="desc">{{ image['NAME']}}</div>
+                </a>
+              </div>
+            {% endfor %}
+          </ul>
+          {% if not my_images %}
+            <p>You haven't uploaded any images yet.</p>
+          {% endif %}
+    </section>
+    <br>
+    <!-- <section class="shared-image-tab">
+        <h2>Shared images</h2>
+    </section> -->
+    <!-- <script type="text/javascript" src="{{ url_for('static', filename='dashboard.js') }}"></script> -->
+</body>
+</html>

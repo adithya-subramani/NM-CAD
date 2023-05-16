@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Register</h1>
+    {{ msg }}
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+    <form method="post">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" required>
+        </div>
+        <div class="form-group">
+            <button type="submit">Register</button>
+        </div>
+        <div class="form-group">
+            <h4>Already have an account?<a href="{{ url_for('login') }}">Login</a></h4>
+        </div>
+    </form>
+    <script type="text/javascript" src="{{ url_for('static', filename='register.js') }}"></script>
+</body>
+</html>

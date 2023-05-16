@@ -1,0 +1,16 @@
+button[type="submit"] {
+    background-color: #1E90FF;
+    /* align-items: center; */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+  
+  button[type="submit"]:hover {
+    /* align: center; */
+    background-color: #007FFF;
+  }

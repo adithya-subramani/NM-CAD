@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Image Editor</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
+
+      .image-container {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #f1f1f1;
+      }
+
+      .image-container img {
+        max-height: 70%;
+        max-width: 70%;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        background-color: #fff;
+        padding: 20px;
+      }
+
+      .slider {
+        width: 300px;
+        margin: 20px;
+      }
+
+      .slider label {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      .slider input[type="range"] {
+        width: 100%;
+      }
+
+      input[type="submit"] {
+        margin: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="image-container">
+        <img id="img" src="data:image/png;base64,{{ im_curr }}">
+      </div>
+      <form id="editor" method="post" action = "{{ url_for('process',id=id,username=username) }}">
+      <div class="controls">
+        <div class="slider">
+          <label>Brightness</label>
+          <input name="brightness" type="range" min="-100" max="100" value="{{b}}">
+        </div>
+        <div class="slider">
+          <label>Contrast</label>
+          <input name="contrast" type="range" min="-100" max="100" value="{{c}}">
+        </div>
+        <div class="slider">
+          <label>Saturation</label>
+          <input name="saturation" type="range" min="-100" max="100" value="{{s}}">
+        </div>
+        <div class="slider">
+          <label>Hue</label>
+          <input name="hue" type="range" min="-180" max="180" value="{{h}}">
+        </div>
+        <div class="slider">
+          <label>Sharpness</label>
+          <input name="sharpness" type="range" min="0" max="100" value="0">
+        </div>
+        <div class="slider">
+          <label>Blur</label>
+          <input id="blur" type="range" min="0" max="10" step="0.1" value="0">
+        </div>
+        <div class="slider">
+          <label>Sepia</label>
+          <input id="sepia" type="range" min="0" max="100" value="0">
+        </div>
+        <div class="slider">
+          <label>Grayscale</label>
+          <input id="grayscale" type="range" min="0" max="100" value="0">
+        </div>
+        <input type="text" name="image" value="data:image/png;base64,{{ im_curr }}" hidden>
+        <input type="text" name="image_orig" value="data:image/png;base64,{{ im_orig }}" hidden>
+        <!-- <input type="button" val="Apply & Save" onclick="{{ url_for('save_img',id=id,img_data=im_curr,username=username) }}">
+        <input type="button" val="Cancel" onclick="{{ url_for('dashboard',username=username) }}"> -->
+        <!-- <a href="{{ url_for('save_img',id=id,img_data=im_curr,username=username) }}">Save & Exit</a>
+        <a hred="{{ url_for('dashboard',username=username) }}">Exit</a> -->
+      </div>
+    </form>
+    <form id="save_exit" method="post" action = "{{ url_for('save_img',id=id,username=username) }}">
+      <input type="text" name="image_orig" value="data:image/png;base64,{{ im_curr }}" hidden>
+      <button type="submit">Save & Exit</button>
+      <a href="{{ url_for('dashboard',username=username) }}">Exit</a>
+    </form>
+    </div>
+    <!-- <script>
+      var img = document.getElementById("img");
+      var brightness = $('#brightness').val();
+        var contrast = $('#contrast').val();
+        var saturation = $('#saturation').val();
+        var hue = $('#hue').val();
+
+    $('input[type="range"]').oninput = function() {
+        console.log("Slide detected");
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "/edit");
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onload = function() {
+      img.src = "data:image/png;base64," + xhr.responseText;
+    }
+    var data = JSON.stringify({
+      image: img.src,
+      brightness: brightness,
+      contrast:contrast,
+      saturation:saturation,
+      hue:hue
+    });
+    xhr.send(data);
+    console.log("Sending");
+  }
+      </script> -->
+      <script>
+        var sliders = document.getElementsByClassName("slider");
+        var form = document.getElementById("editor");
+        for (var i = 0; i < sliders.length; i++) {
+          sliders[i].addEventListener("input", function() {
+            // code to handle slider input
+            // console.log("SLider motion detected...");
+            form.submit();
+          });
+        }
+      </script>
+  </body>
+</html>
